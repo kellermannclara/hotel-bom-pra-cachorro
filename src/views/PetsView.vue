@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router';
 
 const pets = ref([]);
 const tutores = ref([])
+const API_URL = 'http:/localhost:3000'
 
 //chamar minha api para listar todos os pets e tutores
 async function carregarDados() {
@@ -15,6 +16,16 @@ async function carregarDados() {
 
     console.log('PETS -', pets.value)
     console.log('TUTORES -', tutores.value)
+}
+
+function nomeDoTutor(tutorId) {
+    for(const tutor of tutores.value) {
+        if(tutor.id === tutorId) {
+            return tutor.nome;
+        }
+    }
+
+    return 'Oops, Tutor não encontrado'
 }
 onMounted(carregarDados)
 
@@ -42,13 +53,9 @@ onMounted(carregarDados)
                 <td>{{ pet.id }}</td>
                 <td>{{ pet.nome }}</td>
                 <td>{{ pet.especie }}</td>
-                <td>{{ pet.tutorId }}</td>
+                <td>{{ nomeDoTutor(pet.tutorId) }}</td>
             </tr>
         </tbody>
     </table>
-
-    <RouterLink class="btn btn-primary" :to="{name: 'novo-pet'}">
-        Adicionar Pet
-    </RouterLink>
 
 </template>
