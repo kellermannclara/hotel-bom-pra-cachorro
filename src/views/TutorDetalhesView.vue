@@ -9,7 +9,7 @@ const API_URL = 'http://localhost:3000';
 
 async function carregarDados() {
     const tutorId = route.params.id
-  const respostasTutores = await fetch(`${API_URL}/tutores`);
+  const respostasTutores = await fetch(`${API_URL}/tutores/${tutorId}`);
   tutores.value = await respostasTutores.json();
 }
 
