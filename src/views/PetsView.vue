@@ -28,6 +28,21 @@ function nomeDoTutor(tutorId) {
 
   return 'Oops, Tutor não encontrado';
 }
+
+async function excluirPet(id) {
+  const confirmarExclusao = window.confirm(`deseja realmente excluir o pet`)
+
+  if (confirmarExclusao) {
+    //LOGICA PARA EXCLUIR O PETT DO locALHOST3000
+    await fetch(`${API_URL}/pets/${id}`, {
+      method: 'DELETE',
+    })
+
+    await carregarDados()
+
+  }
+}
+
 onMounted(carregarDados);
 
 </script>
@@ -47,6 +62,7 @@ onMounted(carregarDados);
         <th>Nome</th>
         <th>Espécie</th>
         <th>Tutor</th>
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -58,6 +74,10 @@ onMounted(carregarDados);
         <td>{{ pet.nome }}</td>
         <td>{{ pet.especie }}</td>
         <td>{{ nomeDoTutor(pet.tutorId) }}</td>
+        <td>
+          <RouterLink :to="`/pets/${pet.id}`">Vizualizar</RouterLink>
+          <button class="btn btn-danger" @click="excluirPet(pet.id)">Excluir</button>
+        </td>
       </tr>
     </tbody>
   </table>
