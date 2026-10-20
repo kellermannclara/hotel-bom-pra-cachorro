@@ -30,9 +30,9 @@ onMounted(carregarDados);
 
 <template>
      <header class="mb-4">
-    <h1 class="text-2xl font-bold">Listagem de Pets</h1>
+    <h1 class="text-2xl font-bold">Listagem de Tutores</h1>
     <p class="text-body-secondary mb-0">
-      Listagem de Tutores
+      Listagem de Tutores Cadastados no Sistema
     </p>
   </header>
 
@@ -54,6 +54,8 @@ onMounted(carregarDados);
         <td>{{ tutor.telefone }}</td>
         <td>
           <RouterLink :to="`/tutores/${tutor.id}`">Vizualizar</RouterLink>
+        </td>
+        <td>
           <button class="btn btn-danger" @click="excluirPet(tutor.id)">Excluir</button>
         </td>
       </tr>

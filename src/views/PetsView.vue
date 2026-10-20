@@ -76,8 +76,11 @@ onMounted(carregarDados);
         <td>{{ nomeDoTutor(pet.tutorId) }}</td>
         <td>
           <RouterLink :to="`/pets/${pet.id}`">Vizualizar</RouterLink>
+        </td>
+        <td>
           <button class="btn btn-danger" @click="excluirPet(pet.id)">Excluir</button>
         </td>
+
       </tr>
     </tbody>
   </table>
