@@ -1,29 +1,31 @@
 <script setup>
-
 import { onMounted, ref } from 'vue';
-import useRoute from '@/router';
+import { useRoute } from 'vue-router';
 
-const tutores = ref(null);
 const route = useRoute();
 const API_URL = 'http://localhost:3000';
+const tutor = ref(null);
 
-async function carregarDados() {
-    const tutorId = route.params.id
-  const respostasTutores = await fetch(`${API_URL}/tutores/${tutorId}`);
-  tutores.value = await respostasTutores.json();
+async function carregar() {
+  const idTutor = route.params.id;
+
+  const respostaTutor = await fetch(`${API_URL}/tutores/${idTutor}`);
+  console.log('respostaTutor', respostaTutor);
+  tutor.value = await respostaTutor.json();
+  console.log('tutor', tutor.value);
+
 }
 
-onMounted(carregarDados);
-
+onMounted(carregar);
 </script>
 
 <template>
-    <section v-if="tutores == null">
-    <p>CARREGANDO......</p>
+  <section v-if="tutor == null">
+    <p>caregandoooooo</p>
   </section>
 
   <section v-else>
-    <h1>Nome do Tutor: {{ tutor.nome }}</h1>
-    <h5>Telefone: {{ tutor.telefone }}</h5>
+    <h1>Nome do tutor: {{ tutor.nome }}</h1>
+    <p> Telefone: {{ tutor.telefone }}</p>
   </section>
 </template>
