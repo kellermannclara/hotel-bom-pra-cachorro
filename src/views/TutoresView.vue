@@ -5,10 +5,14 @@ import { RouterLink } from 'vue-router';
 
 const tutores = ref([]);
 const API_URL = 'http://localhost:3000';
+const pets = ref([]);
 
 async function carregarDados() {
   const respostasTutores = await fetch(`${API_URL}/tutores`);
   tutores.value = await respostasTutores.json();
+
+  const respostaPets = await fetch(`${API_URL}/pets`);
+  pets.value = await respostaPets.json();
 }
 
 async function excluirPet(id){
@@ -21,6 +25,10 @@ async function excluirPet(id){
 
     await carregarDados();
   }
+}
+
+function quantidade(tutorId) {
+  return pets.value.filter(pet => pet.tutorId === tutorId).length
 }
 
 onMounted(carregarDados);
@@ -41,6 +49,7 @@ onMounted(carregarDados);
       <tr>
         <th>id</th>
         <th>Nome</th>
+        <th>Quant. Pets</th>
         <th>Telefone</th>
       </tr>
     </thead>
@@ -51,6 +60,7 @@ onMounted(carregarDados);
       >
         <td>{{ tutor.id }}</td>
         <td>{{ tutor.nome}}</td>
+        <td>{{ quantidade(tutor.id) }}</td>
         <td>{{ tutor.telefone }}</td>
         <td>
           <RouterLink :to="`/tutores/${tutor.id}`">Vizualizar</RouterLink>

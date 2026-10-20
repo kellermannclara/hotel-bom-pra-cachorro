@@ -10,6 +10,13 @@ const tutor = ref(null);
 const pets = ref([]);
 const petTutor = ref([]);
 
+const novoPet = ref({
+  nome: '',
+  especie: '',
+  tutorId: null,
+});
+
+
 async function carregar() {
   const idTutor = route.params.id;
 
@@ -21,11 +28,29 @@ async function carregar() {
   const respostaPets = await fetch(`${API_URL}/pets`);
   pets.value = await respostaPets.json();
 
-  for (const pet of pets.value) {
-        if (pet.tutorId === tutor.value.id) {
-            petTutor.value.push(pet); 
-        }
-    }
+  petTutor.value = pets.value.filter(
+        pet => pet.tutorId === tutor.value.id
+    );
+
+    novoPet.value.tutorId = tutor.value.id
+}
+
+
+
+async function salvarPet() {
+  await fetch(`${API_URL}/pets`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(novoPet.value),
+  });
+
+  await carregar();
+
+  novoPet.value.nome = '';
+  novoPet.value.especie = '';
+  
 }
 
 onMounted(carregar);
@@ -41,7 +66,7 @@ onMounted(carregar);
     <p>Telefone: {{ tutor.telefone }}</p>
 
     <div>
-      <p class="text-body-secondary mb-0" >Pets deste Tutor</p>
+      <p class="text-body-secondary mb-0">Pets deste Tutor</p>
 
       <div>
         <table class="table table-striped table-hover">
@@ -64,6 +89,65 @@ onMounted(carregar);
           </tbody>
         </table>
       </div>
+    </div>
+
+    <div>
+      <form
+        class="row"
+        @submit.prevent="salvarPet"
+      >
+        <div class="col-md-6">
+          <label
+            for="nome"
+            class="form-label"
+          >
+            Nome do Pet:
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="nome"
+            v-model="novoPet.nome"
+            required
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label
+            class="form-label"
+            for="especie"
+            >Espécie</label
+          >
+          <select
+            name="especie"
+            id="especie"
+            class="form-select"
+            required
+            v-model="novoPet.especie"
+          >
+            <option
+              value=""
+              disabled
+            >
+              Selecione a espécie:
+            </option>
+            <option value="Cachorro">Cachorro</option>
+            <option value="Gato">Gato</option>
+            <option value="Coelho">Coelho</option>
+            <option value="Tartaruga">Tartaruga</option>
+          </select>
+        </div>
+
+        <div class="col-12 d-flex gap-2 mt-3">
+          <button
+            class="btn btn-success"
+            type="submit"
+          >
+            Salvar Pet
+          </button>
+        </div>
+      </form>
     </div>
   </section>
 </template>
